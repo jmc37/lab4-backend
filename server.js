@@ -1,5 +1,6 @@
 const http = require('http'); 
 const url = require('url');
+const PORT = process.env.PORT || 8888;
 const GET = 'GET'; const POST = 'POST';
 const dictionary = {};
 const search_route = '/search/'
@@ -48,4 +49,4 @@ http.createServer(function(req,res){
         })
     }
     }
-}).listen(8888);
+}).listen(PORT);

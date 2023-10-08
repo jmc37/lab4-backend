@@ -5,6 +5,9 @@ const GET = 'GET'; const POST = 'POST';
 const dictionary = {};
 const search_route = '/search/';
 const create_route = '/create';
+const endpoint_error = 'Endpoint not found'
+const method_error = 'Method not allowed'
+const exists_error = "Warning, item already exists"
 let count = 0;
 let request = 0;
 
@@ -39,7 +42,7 @@ http.createServer(function(req,res){
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "*"
             });
-            res.end(JSON.stringify({ error: 'Endpoint not found' }));
+            res.end(JSON.stringify({ error: endpoint_error }));
         }
     } 
     else if (req.method === POST) {
@@ -57,7 +60,7 @@ http.createServer(function(req,res){
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Methods": "*"
                     });
-                    res.end(JSON.stringify({ error: "Warning, item already exists" }));
+                    res.end(JSON.stringify({ error: exists_error }));
                 }
                 else{
                     dictionary[data.term] = data.definition;
@@ -78,7 +81,7 @@ http.createServer(function(req,res){
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "*"
             });
-            res.end(JSON.stringify({ error: 'Endpoint not found' }));
+            res.end(JSON.stringify({ error: endpoint_error }));
         }
     }
     else{
@@ -87,7 +90,6 @@ http.createServer(function(req,res){
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*"
         });
-        res.end(JSON.stringify({ error: 'Method not allowed' }));
+        res.end(JSON.stringify({ error: method_error }));
     }
 }).listen(PORT);
-

@@ -1,7 +1,8 @@
-const { response } = require('express');
 const http = require('http'); const url = require('url');
 const GET = 'GET'; const POST = 'POST';
 const dictionary = {};
+const search_route = '/search/'
+const create_route = '/create'
 let count = 0;
 let request = 0;
 let reply;
@@ -12,19 +13,22 @@ http.createServer(function(req,res){
         "Access-Control-Allow-Methods": "*",
     
     });
+    const { pathname, query } = url.parse(req.url, true);
     if(req.method === GET){
+        if(pathname === search_route){
+        const term = query.term
         request += 1;
-        const q = url.parse(req.url, true);
-        if(q.query["term"] in dictionary){
-            reply = `${q.query["term"]}: ${dictionary[q.query["term"]]}`;
+        if(term in dictionary){
+            reply = `${term}: ${dictionary[term]}`;
         }
         else{
-            reply = `Request # ${request}, word ${q.query["term"]} not found!`;
+            reply = `Request # ${request}, word ${term} not found!`;
         }
         res.end(JSON.stringify(reply));
+    }
     } else if (req.method === POST) {
+        if(pathname === create_route){
         let body = '';
-        
         req.on('data', chunk => {
             body += chunk.toString(); // convert buffer to string
         });
@@ -41,5 +45,6 @@ http.createServer(function(req,res){
             }
             res.end(JSON.stringify(reply));
         })
+    }
     }
 }).listen(8888);
